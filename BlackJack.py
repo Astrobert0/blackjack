@@ -8,11 +8,10 @@ class players:
         self.hand = []
         self.totalCards = 0
         self.points = 0
-    def printHand(self):
-        print(self.hand)
-
-    def printValue(self):
-        return self.value
+        self.reset()
+    def reset(self):
+        self.hand = []
+        self.totalCards = 0
 
 class cardManager:
     def __init__(self):
@@ -121,13 +120,15 @@ manager.takeCard(deck, cpu)
 value.comparator(p1.hand, p1)
 print(p1.hand, 'Total: ',p1.totalCards)
 
+
 while True:
     takeCard = input('Take another card? yes/no ')
     takeCard.lower()
     if takeCard == 'yes':
         manager.takeCard(deck, p1)
         value.comparator(p1.hand, p1)
-        print(p1.hand, 'Total: ',p1.totalCards, '\n')
+        print('hand: ',p1.hand, 'Total: ',p1.totalCards)
+
         continue
 
     elif takeCard == 'no': #CPU turn
@@ -135,7 +136,7 @@ while True:
         time.sleep(2)
         value.comparator(cpu.hand, cpu)
         while True:
-            if cpu.totalCards < 21:
+            if cpu.totalCards < 20:
                 manager.takeCard(deck,cpu)
                 value.comparator(cpu.hand, cpu)
 
@@ -148,17 +149,41 @@ while True:
             else:
                 print(p1.name,'hand: ', p1.hand, '\n', cpu.name,' hand: ', cpu.hand, '\n')
                 time.sleep(1)
-                print('\n')
                 winLoosecheck(p1,cpu)
                 break
     else:
         print('Please, write "yes" or "no"', '\n')
-    break
-
-
+        continue
+    print(p1.name,': ',p1.points,'  ',cpu.name,': ',cpu.points)
+    conPlay = input('Continue? yes/no ')
+    conPlay.lower()
+    time.sleep(1)
+    if conPlay == 'yes':
+        time.sleep(0.5)
+        print('\n')
+        time.sleep(0.5)
+        del deck
+        p1.reset()
+        cpu.reset()
+        deck = manager.realDeckGenerator()
+        random.shuffle(deck)
+        random.shuffle(deck)
+        manager.takeCard(deck, p1)
+        manager.takeCard(deck, cpu)
+        value.comparator(p1.hand, p1)
+        print(p1.hand, 'Total: ',p1.totalCards)
+        
+    elif conPlay == 'no':
+        print('Bye, bye! \n')
+        break
+    
+        
     
 
     
+
+
+
 
 
     
